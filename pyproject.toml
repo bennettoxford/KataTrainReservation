@@ -13,3 +13,9 @@ flask = ["flask"]
 dev = [
     "pytest",
 ]
+
+[tool.pytest.ini_options]
+testpaths = [
+    "train_data_service",
+    "booking_reference_service",
+]
