@@ -16,4 +16,5 @@ dev = [
 testpaths = [
     "train_data_service",
     "booking_reference_service",
+    "ticket_office",
 ]
