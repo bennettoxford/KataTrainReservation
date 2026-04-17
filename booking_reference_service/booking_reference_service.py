@@ -28,7 +28,7 @@ class BookingReferenceService:
         return str(hex(next_number))[2:]
 
 
-service = BookingReferenceService(123456789)
+service = None
 
 
 @app.route('/booking_reference')
@@ -55,7 +55,6 @@ previous reference by passing it on the command line:
     python {0} 75bcd15
 """.format(sys.argv[0]))
     else:
-        if sys.argv[1:]:
-            starting_point = int(sys.argv[1], 16) + 1
-            service.counter = itertools.count(starting_point)
+        starting_point = int(sys.argv[1], 16) + 1 if sys.argv[1:] else 123456789
+        service = BookingReferenceService(starting_point)
         app.run(port=8082)
