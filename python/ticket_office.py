@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 class TicketOffice:
     def reserve(self, train_id, seat_count):
-        pass
+        return "{}"
 
 
 service = None
