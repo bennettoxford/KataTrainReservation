@@ -56,5 +56,7 @@ previous reference by passing it on the command line:
 """.format(sys.argv[0]))
     else:
         starting_point = int(sys.argv[1], 16) + 1 if sys.argv[1:] else 123456789
+        import logging
+        logging.getLogger("werkzeug").setLevel(logging.WARNING)
         service = BookingReferenceService(starting_point)
         app.run(port=8082)

@@ -117,6 +117,8 @@ directory.
     python {0} trains.json
 """.format(sys.argv[0]))
     else:
+        import logging
+        logging.getLogger("werkzeug").setLevel(logging.WARNING)
         trains_data_file = sys.argv[1] if sys.argv[1:] else Path(__file__).parent / "trains.json"
         with open(trains_data_file) as f:
             service = TrainDataService(f.read())

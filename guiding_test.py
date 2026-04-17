@@ -1,3 +1,4 @@
+import os
 import subprocess
 import sys
 import time
@@ -51,4 +52,4 @@ def wait_for_service(url, timeout=5):
 
 
 def start_service(args):
-    return subprocess.Popen([sys.executable] + args)
+    return subprocess.Popen([sys.executable] + args, stdout=subprocess.DEVNULL)

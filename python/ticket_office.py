@@ -19,5 +19,7 @@ def reserve():
 
 
 if __name__ == "__main__":
+    import logging
+    logging.getLogger("werkzeug").setLevel(logging.WARNING)
     service = TicketOffice()
     app.run(port=8083)
