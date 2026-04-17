@@ -26,7 +26,7 @@ def services():
     try:
         processes.append(start_service(["train_data_service/train_data_service.py"]))
         processes.append(start_service(["booking_reference_service/booking_reference_service.py"]))
-        processes.append(start_service(["python/ticket_office.py"]))
+        processes.append(start_service(["ticket_office/ticket_office.py"]))
 
         wait_for_service("http://127.0.0.1:8081/healthcheck")
         wait_for_service("http://127.0.0.1:8082/healthcheck")
