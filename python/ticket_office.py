@@ -6,8 +6,16 @@ class TicketOffice(object):
         pass
 
 if __name__ == "__main__":
-    """Deploy this class as a web service using CherryPy"""
-    import cherrypy
-    TicketOffice.reserve.exposed = True
-    cherrypy.config.update({"server.socket_port" : 8083})
-    cherrypy.quickstart(TicketOffice())
+    """Deploy this class as a web service using Flask"""
+    from flask import Flask, request
+
+    app = Flask(__name__)
+    office = TicketOffice()
+
+    @app.route('/reserve', methods=["POST"])
+    def reserve():
+        train_id = request.form["train_id"]
+        seat_count = request.form["seat_count"]
+        return office.reserve(train_id, seat_count)
+
+    app.run(port=8083)
