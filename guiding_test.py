@@ -27,7 +27,7 @@ def test_reserve_seats():
 def services():
     processes = []
     try:
-        processes.append(start_service(["train_data_service/train_data_service.py", "train_data_service/trains.json"]))
+        processes.append(start_service(["train_data_service/train_data_service.py"]))
         processes.append(start_service(["booking_reference_service/booking_reference_service.py"]))
         processes.append(start_service(["python/ticket_office.py"]))
 

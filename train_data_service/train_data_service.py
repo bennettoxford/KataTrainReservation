@@ -42,6 +42,7 @@ particular train. Use it with care:
 """
 
 import json
+from pathlib import Path
 
 from flask import Flask, request
 
@@ -116,7 +117,7 @@ directory.
     python {0} trains.json
 """.format(sys.argv[0]))
     else:
-        trains_data_file = sys.argv[1] if sys.argv[1:] else "trains.json"
+        trains_data_file = sys.argv[1] if sys.argv[1:] else Path(__file__).parent / "trains.json"
         with open(trains_data_file) as f:
             service = TrainDataService(f.read())
         app.run(port=8081)
