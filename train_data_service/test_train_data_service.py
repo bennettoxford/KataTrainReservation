@@ -1,5 +1,3 @@
-""" Use py.test to run this test """
-
 import json
 
 from train_data_service import TrainDataService

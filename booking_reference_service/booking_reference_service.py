@@ -1,5 +1,7 @@
 """
-You can get a unique booking reference using this service. For test purposes, you can start a local service using this code. You can assume the real service will behave the same way, but be available on a different url.
+You can get a unique booking reference using this service. For test purposes,
+you can start a local service using this code. You can assume the real service
+will behave the same way, but be available on a different url.
 
 You can use this service to get a unique booking reference. Make a GET request to:
 
@@ -7,13 +9,17 @@ You can use this service to get a unique booking reference. Make a GET request t
 
 This will return a string that looks a bit like this:
 
-	75bcd15
+    75bcd15
 """
 
-from flask import Flask
 import itertools
 
-class BookingReferenceService(object):
+from flask import Flask
+
+app = Flask(__name__)
+
+
+class BookingReferenceService:
     def __init__(self, starting_point):
         self.counter = itertools.count(starting_point)
 
@@ -21,24 +27,20 @@ class BookingReferenceService(object):
         next_number = next(self.counter)
         return str(hex(next_number))[2:]
 
-def main(args):
-    if args:
-        starting_point = int(args[0], 16) + 1
-    else:
-        starting_point = 123456789
 
-    service = BookingReferenceService(starting_point)
-    app = Flask(__name__)
+service = BookingReferenceService(123456789)
 
-    @app.route('/booking_reference')
-    def booking_reference():
-        return service.booking_reference()
 
-    app.run(port=8082)
+@app.route('/booking_reference')
+def booking_reference():
+    return service.booking_reference()
+
 
 if __name__ == "__main__":
     import sys
-    help_text = """
+
+    if "-help" in sys.argv or "--help" in sys.argv or "-h" in sys.argv:
+        print("""
 Use this program to start a booking reference service:
 
     python {0}
@@ -51,8 +53,9 @@ If you have to restart the service, you can continue counting from the
 previous reference by passing it on the command line:
 
     python {0} 75bcd15
-    """.format(sys.argv[0])
-    if "-help" in sys.argv or "--help" in sys.argv or "-h" in sys.argv:
-        print(help_text)
+""".format(sys.argv[0]))
     else:
-        main(sys.argv[1:])
+        if sys.argv[1:]:
+            starting_point = int(sys.argv[1], 16) + 1
+            service.counter = itertools.count(starting_point)
+        app.run(port=8082)
