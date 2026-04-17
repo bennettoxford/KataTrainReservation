@@ -31,6 +31,11 @@ class BookingReferenceService:
 service = None
 
 
+@app.route('/healthcheck')
+def healthcheck():
+    return ""
+
+
 @app.route('/booking_reference')
 def booking_reference():
     return service.booking_reference()

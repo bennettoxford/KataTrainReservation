@@ -11,6 +11,11 @@ class TicketOffice:
 service = None
 
 
+@app.route('/healthcheck')
+def healthcheck():
+    return ""
+
+
 @app.route('/reserve', methods=["POST"])
 def reserve():
     train_id = request.form["train_id"]

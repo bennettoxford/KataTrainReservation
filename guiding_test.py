@@ -1,4 +1,3 @@
-import os
 import subprocess
 import sys
 import time
@@ -29,9 +28,9 @@ def services():
         processes.append(start_service(["booking_reference_service/booking_reference_service.py"]))
         processes.append(start_service(["python/ticket_office.py"]))
 
-        wait_for_service("http://127.0.0.1:8081/data_for_train/express_2000")
-        wait_for_service("http://127.0.0.1:8082/booking_reference")
-        wait_for_service("http://127.0.0.1:8083/reserve")
+        wait_for_service("http://127.0.0.1:8081/healthcheck")
+        wait_for_service("http://127.0.0.1:8082/healthcheck")
+        wait_for_service("http://127.0.0.1:8083/healthcheck")
 
         yield
     finally:
@@ -44,7 +43,7 @@ def wait_for_service(url, timeout=5):
     deadline = time.monotonic() + timeout
     while time.monotonic() < deadline:
         try:
-            requests.get(url, timeout=1)
+            requests.get(url, timeout=1).raise_for_status()
             return
         except requests.ConnectionError:
             time.sleep(0.1)

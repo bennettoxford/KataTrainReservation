@@ -79,6 +79,11 @@ class TrainDataService:
 service = None
 
 
+@app.route('/healthcheck')
+def healthcheck():
+    return ""
+
+
 @app.route('/data_for_train/<train_id>')
 def data_for_train(train_id):
     return service.data_for_train(train_id)
