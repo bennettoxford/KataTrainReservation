@@ -1,4 +1,6 @@
 train/*
 trains/*
 *.pyc
-
+/.vagrant/
+Vagrantfile
+/.claude/
