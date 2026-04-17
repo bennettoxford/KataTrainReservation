@@ -1,21 +1,17 @@
-import os
-import signal
 import subprocess
 import sys
 import time
-import urllib.request
-import json
 
 import pytest
+import requests
 
 
 def test_reserve_seats():
-    form_data = {"train_id": "express_2000", "seat_count": 4}
-    data = urllib.parse.urlencode(form_data)
-
-    req = urllib.request.Request("http://127.0.0.1:8083/reserve", bytes(data, encoding="ISO-8859-1"))
-    response = urllib.request.urlopen(req).read().decode("ISO-8859-1")
-    reservation = json.loads(response)
+    response = requests.post("http://127.0.0.1:8083/reserve", data={
+        "train_id": "express_2000",
+        "seat_count": 4,
+    })
+    reservation = response.json()
 
     assert reservation["train_id"] == "express_2000"
     assert len(reservation["seats"]) == 4
@@ -46,9 +42,9 @@ def wait_for_service(url, timeout=5):
     deadline = time.monotonic() + timeout
     while time.monotonic() < deadline:
         try:
-            urllib.request.urlopen(url, timeout=1)
+            requests.get(url, timeout=1)
             return
-        except OSError:
+        except requests.ConnectionError:
             time.sleep(0.1)
     raise TimeoutError(f"Service at {url} did not start in time")
 
