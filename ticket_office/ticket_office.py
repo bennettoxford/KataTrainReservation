@@ -1,11 +1,11 @@
-from flask import Flask, request
+from flask import Flask, jsonify, request
 
 app = Flask(__name__)
 
 
 class TicketOffice:
     def reserve(self, train_id, seat_count):
-        return "{}"
+        return {}
 
 
 service = None
@@ -20,7 +20,7 @@ def healthcheck():
 def reserve():
     train_id = request.form["train_id"]
     seat_count = request.form["seat_count"]
-    return service.reserve(train_id, seat_count)
+    return jsonify(service.reserve(train_id, seat_count))
 
 
 if __name__ == "__main__":

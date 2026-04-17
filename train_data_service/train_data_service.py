@@ -44,7 +44,7 @@ particular train. Use it with care:
 import json
 from pathlib import Path
 
-from flask import Flask, request
+from flask import Flask, jsonify, request
 
 app = Flask(__name__)
 
@@ -54,13 +54,12 @@ class TrainDataService:
         self.trains = json.loads(json_data)
 
     def data_for_train(self, train_id):
-        return json.dumps(self.trains.get(train_id))
+        return self.trains.get(train_id)
 
     def reserve(self, train_id, seats, booking_reference):
         train = self.trains.get(train_id)
-        seats = json.loads(seats)
         for seat in seats:
-            if not seat in train["seats"]:
+            if seat not in train["seats"]:
                 return "seat not found {0}".format(seat)
             existing_reservation = train["seats"][seat]["booking_reference"]
             if existing_reservation and existing_reservation != booking_reference:
@@ -86,20 +85,20 @@ def healthcheck():
 
 @app.route('/data_for_train/<train_id>')
 def data_for_train(train_id):
-    return service.data_for_train(train_id)
+    return jsonify(service.data_for_train(train_id))
 
 
 @app.route('/reserve', methods=["POST"])
 def reserve():
     train_id = request.form["train_id"]
-    seats = request.form["seats"]
+    seats = json.loads(request.form["seats"])
     booking_reference = request.form["booking_reference"]
-    return service.reserve(train_id, seats, booking_reference)
+    return jsonify(service.reserve(train_id, seats, booking_reference))
 
 
 @app.route('/reset/<train_id>')
 def reset(train_id):
-    return service.reset(train_id)
+    return jsonify(service.reset(train_id))
 
 
 if __name__ == "__main__":
