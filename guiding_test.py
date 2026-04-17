@@ -11,6 +11,7 @@ def test_reserve_seats():
         "train_id": "express_2000",
         "seat_count": 4,
     })
+    response.raise_for_status()
     reservation = response.json()
 
     assert reservation["train_id"] == "express_2000"
