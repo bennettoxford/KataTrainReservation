@@ -6,8 +6,6 @@ Railway operators aren't always known for their use of cutting edge technology, 
 
 You're working on the "TicketOffice" service, and your next task is to implement the feature for reserving seats on a particular train. The railway operator has a service-oriented architecture, and both the interface you'll need to fulfill, and some services you'll need to use are already implemented.
 
-All the starting code for this kata is available in [my github repo](https://github.com/emilybache/KataTrainReservation). The latest version of these instructions is also there.
-
 ## Business Rules around Reservations
 
 There are various business rules and policies around which seats may be reserved. For a train overall, no more than 70% of seats may be reserved in advance, and ideally no individual coach should have no more than 70% reserved seats either. However, there is another business rule that says you _must_ put all the seats for one reservation in the same coach. This could make you and go over 70% for some coaches, just make sure to keep to 70% for the whole train.
@@ -20,11 +18,7 @@ A reservation comprises a json document with three fields, the train id, booking
 
 	{"train_id": "express_2000", "booking_reference": "75bcd15", "seats": ["1A", "1B"]}
 
-If it is not possible to find suitable seats to reserve, the service should instead return an empty list of seats and an empty string for the booking reference. The test cases in guiding_test.py outline the expected interface. (For Python 2.x users, there is also a version called 'python2\_guiding\_test.py')
-
-### Command line option
-
-If you think it's too hard to come up with a fully deployed HTTP service, you could instead write a command line program which takes the train id and number of seats as command line arguments, and returns the same json as above.
+If it is not possible to find suitable seats to reserve, the service should instead return an empty list of seats and an empty string for the booking reference. The test cases in guiding_test.py outline the expected interface.
 
 ### Booking Reference Service
 
@@ -75,4 +69,3 @@ The other two fields are ordinary strings. Note the server will prevent you from
 The service has one additional method, that will remove all reservations on a particular train. Use it with care:
 
     http://localhost:8081/reset/express_2000
-
