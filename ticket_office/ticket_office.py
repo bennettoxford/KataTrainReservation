@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 class TicketOffice:
     def reserve(self, train_id, seat_count):
-        response = requests.get("http://localhost:8081/data_for_train/express_2000")
+        response = requests.get(f"http://localhost:8081/data_for_train/{train_id}")
         seats = response.json()
 
         seat_numbers = list(seats["seats"].keys())[:seat_count]

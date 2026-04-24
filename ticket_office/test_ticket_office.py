@@ -2,7 +2,7 @@ from ticket_office import TicketOffice
 import responses
 
 
-def populate_train_data_service(count=None, numbers=None):
+def populate_train_data_service(count=None, numbers=None, train_id="express_2000"):
     assert not (count and numbers)
     if not numbers:
         if not count:
@@ -13,15 +13,15 @@ def populate_train_data_service(count=None, numbers=None):
     for n in numbers:
         seat_data[n] = {}
 
-    return responses.get("http://localhost:8081/data_for_train/express_2000", json={"seats": seat_data})
+    return responses.get(f"http://localhost:8081/data_for_train/{train_id}", json={"seats": seat_data})
 
 @responses.activate
 def test_reserve_seats_on_correct_train():
-    populate_train_data_service()
+    populate_train_data_service(train_id="slow_2000")
 
     office = TicketOffice()
-    result = office.reserve("express_2000", 4)
-    assert result["train_id"] == "express_2000"
+    result = office.reserve("slow_2000", 4)
+    assert result["train_id"] == "slow_2000"
 
 @responses.activate
 def test_reserve_correct_number_of_seats_when_enough_seats_are_available():
@@ -48,5 +48,9 @@ def test_check_seats_are_from_data_service():
 
     assert set(result["seats"]) == {"1A","2A"}
 
+@responses.activate
 def test_correct_train_id_passed_to_other_service():
-    assert False
+    populate_train_data_service(train_id="slow_2000")
+    office = TicketOffice()
+    office.reserve("slow_2000", 4)
+    
